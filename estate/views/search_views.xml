@@ -1,0 +1,15 @@
+<odoo>
+		<record id='estate_search' model='ir.ui.view'>
+				<field name='name'>estate.search</field>
+				<field name='model'>estate_property</field>
+				<field name='arch' type='xml'>
+						<search string='Estate searching'>
+								<filter string='Actived Estate' name='active' domain="[('active','=',True),'|',('state','=','new'),('state','=','offer_received')]"/>
+								<separator/>
+								<group string='Group By'>
+										<filter string='GroupBy Postcode' name='postcode' context="{'group_by':'postcode'}"/>
+								</group>
+						</search>
+				</field>
+		</record>
+</odoo>

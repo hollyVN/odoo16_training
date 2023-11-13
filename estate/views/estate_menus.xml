@@ -1,0 +1,8 @@
+<odoo>
+		<menuitem id='root_menu' name='Properties'>
+				<menuitem id='first_level_menu' name='First level'>
+						<menuitem id='second_level_menu' name='Second level' action='estate_property_action'/>
+				</menuitem>
+		</menuitem>
+		<!-- <menuitem id='property_type' name='Property Type' parent='root_menu' action='type_action'/> -->
+</odoo>
