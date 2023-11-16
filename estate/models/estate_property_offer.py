@@ -8,7 +8,7 @@ class Offer(models.Model):
     name=fields.Char('Offer:')
     price=fields.Float('Price:')
     partner_id=fields.Many2one('res.partner',required=True,string='Partner')
-    status=fields.Selection([('accepted','Accepted'),('refurse','Refuse')],copy=False,string='Status')
+    status=fields.Selection([('accepted','Accepted'),('refuse','Refuse')],copy=False,string='Status')
 
     date_deadline=fields.Date(string='Deadline',compute='_compute_deadline',inverse='_inverse_deadline',store=True)
     validity=fields.Integer("Validity(days)", default=8)
@@ -16,6 +16,22 @@ class Offer(models.Model):
 
     # many2one fields that is inverse field with one2many at other model
     property_id=fields.Many2one('estate_property',required=True,readonly=True)
+
+    def action_refuse(self):
+        # self.write({'status':'refuse'})
+        self.status='refuse'
+        self.property_id.selling_price = 0
+        self.property_id.buyer_id =  ""
+
+    def action_accepted(self):
+        # this is how to make "only one offer can be accepted for a given property"
+        all_offer = self.env['estate_property_offer'].search([])
+        for offer in all_offer:
+            offer.status = 'refuse'
+
+        self.status='accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id.id
 
     @api.depends("validity","create_date")
     def _compute_deadline(self):
@@ -28,3 +44,4 @@ class Offer(models.Model):
             each.validity = (each.date_deadline - each.create_date).days
             # each.validity = (each.date_deadline - each.create_date).days
             each.create_date = fields.Date.from_string(each.date_deadline) - timedelta(days=each.validity)
+

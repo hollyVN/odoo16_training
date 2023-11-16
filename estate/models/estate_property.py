@@ -1,4 +1,6 @@
-from odoo import models, fields, api, tools, SUPERUSER_ID
+from odoo import models, fields, api,SUPERUSER_ID
+from odoo.exceptions import UserError
+# from odoo.exceptions import UserError
 from datetime import date, timedelta
 
 class Estate_Property(models.Model):
@@ -34,7 +36,27 @@ class Estate_Property(models.Model):
 
     # one2many fields
     offer_ids=fields.One2many('estate_property_offer','property_id',string='Offers')
+
+    # def user_err(self,message):
+    #     return odoo.exceptions.UserError(message)
+
+    # action button for estate status use odoo.exceptions to raise exceptions
+    def action_change_status_sold(self):
+        for each in self:
+            if each.state != 'sold' and each.state != 'canceled':
+                each.state = 'sold'
+            else:
+                if each.state == 'canceled':
+                    raise UserError('canceled property can not be sold')
     
+    def action_change_status_canceled(self):
+        for each in self:
+            if each.state != 'sold' and each.state != 'canceled':
+                each.state = 'canceled'
+            else:
+                if each.state == 'sold':
+                    raise UserError('sold property can not be canceled')
+
     # compute field
     @api.model
     def date_selection(self):
