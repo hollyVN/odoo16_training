@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 class Offer(models.Model):
     _name='estate_property_offer'
     _description='this is offer for deal'
+    _order='price desc'
 
     name=fields.Char('Offer:')
     price=fields.Float('Price:')
@@ -16,6 +17,10 @@ class Offer(models.Model):
 
     # many2one fields that is inverse field with one2many at other model
     property_id=fields.Many2one('estate_property',required=True,readonly=True)
+
+    _sql_constraints = [
+            ('offer_price_constraints','CHECK(price >= 0)','offer price can not be negative')
+            ]
 
     def action_refuse(self):
         # self.write({'status':'refuse'})

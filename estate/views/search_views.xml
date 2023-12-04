@@ -4,6 +4,13 @@
 				<field name='model'>estate_property</field>
 				<field name='arch' type='xml'>
 						<search string='Estate searching'>
+              <field name='name'/>
+              <field name='property_type_id'/>
+              <field name='postcode'/>
+              <field name='expected_price'/>
+              <field name='living_area' filter_domain="[('living_area','>=',self)]"/>
+                <filter string='Available' name='available' domain="[('state','in',('new','offer received'))]" help='show new and offer received'/>
+                <separator/>
 								<filter string='Actived Estate' name='active' domain="[('active','=',True),'|',('state','=','new'),('state','=','offer_received')]"/>
 								<separator/>
 								<group string='Group By'>

@@ -6,13 +6,25 @@
 				<field name='arch' type='xml'>
 						<form string='Property Type'>
 								<sheet>
-										<group>
-												<div>
-														<h1>
-																<field name='name'/>
-														</h1>
-												</div>
-										</group>
+										<div>
+												<h1>
+														<field name='name'/>
+												</h1>
+										</div>
+                          <notebook>
+                            <page string='Property Type'>
+                              <group>
+                          <field name='property_ids'>
+                            <tree name='propertyType'>
+                              <field name='name'/>
+                              <field name='expected_price'/>
+                              <field name='state'/>
+                          </tree>
+                      </field>
+
+                    </group>
+                    </page>
+                        </notebook>
 								</sheet>
 						</form>
 				</field>
